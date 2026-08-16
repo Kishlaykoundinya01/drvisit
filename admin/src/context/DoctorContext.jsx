@@ -118,6 +118,27 @@ const DoctorContextProvider = (props) => {
     }
   };
 
+  const changePassword = async (currentPassword, newPassword) => {
+    try {
+      const { data } = await axios.post(
+        backendUrl + "/api/doctor/change-password",
+        { currentPassword, newPassword },
+        authHeader
+      );
+      if (data.success) {
+        toast.success(data.message);
+        return true;
+      } else {
+        toast.error(data.message);
+        return false;
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(error.response?.data?.message || error.message);
+      return false;
+    }
+  };
+
   const value = {
     dToken,
     setDToken,
@@ -133,6 +154,7 @@ const DoctorContextProvider = (props) => {
     getProfileData,
     setProfileData,
     profileData,
+    changePassword,
   };
 
   return (

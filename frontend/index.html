@@ -5,6 +5,29 @@
     <link rel="icon" type="image/svg+xml" href="/fabicon_logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DrVisit</title>
+    <script>
+      (function () {
+        var saved = localStorage.getItem("theme");
+        var systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (
+          saved === "dark" ||
+          (!saved && systemDark)
+        ) {
+          document.documentElement.classList.add("dark");
+        }
+      })();
+      // Update on system preference change
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function(e) {
+        var saved = localStorage.getItem("theme");
+        if (!saved) {
+          if (e.matches) {
+            document.documentElement.classList.add("dark");
+          } else {
+            document.documentElement.classList.remove("dark");
+          }
+        }
+      });
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import { DoctorContext } from './context/DoctorContext'
 import { AdminContext } from './context/AdminContext'
 import { Route, Routes, Navigate, useLocation } from 'react-router-dom'
@@ -30,7 +30,7 @@ const App = () => {
   // Admin layout and routes
   if (aToken) {
     return (
-      <div className='bg-[#F8F9FD]'>
+      <div className='bg-[#F8F9FD] dark:bg-slate-950 min-h-screen transition-colors'>
         <ToastContainer />
         <Navbar />
         <div className='flex items-start'>
@@ -50,7 +50,7 @@ const App = () => {
   // Doctor layout and routes
   if (dToken) {
     return (
-      <div className='bg-[#F8F9FD]'>
+      <div className='bg-[#F8F9FD] dark:bg-slate-950 min-h-screen transition-colors'>
         <ToastContainer />
         <Navbar />
         <div className='flex items-start'>

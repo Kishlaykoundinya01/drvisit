@@ -1,10 +1,32 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/fabicon_logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DrVisit Panel</title>
+    <script>
+      (function () {
+        var saved = localStorage.getItem("adminTheme");
+        var systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (
+          saved === "dark" ||
+          (!saved && systemDark)
+        ) {
+          document.documentElement.classList.add("dark");
+        }
+      })();
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function(e) {
+        var saved = localStorage.getItem("adminTheme");
+        if (!saved) {
+          if (e.matches) {
+            document.documentElement.classList.add("dark");
+          } else {
+            document.documentElement.classList.remove("dark");
+          }
+        }
+      });
+    </script>
   </head>
   <body>
     <div id="root"></div>

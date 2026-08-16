@@ -16,33 +16,28 @@ const Login = () => {
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
-    try{
-    if (state === 'Sign Up') {
-
-      const { data } = await axios.post(backendUrl + '/api/user/register', { name, email, password })
-
-      if (data.success) {
-        localStorage.setItem('token', data.token)
-        setToken(data.token)
+    try {
+      if (state === 'Sign Up') {
+        const { data } = await axios.post(backendUrl + '/api/user/register', { name, email, password })
+        if (data.success) {
+          localStorage.setItem('token', data.token)
+          setToken(data.token)
+        } else {
+          toast.error(data.message)
+        }
       } else {
-        toast.error(data.message)
+        const { data } = await axios.post(backendUrl + '/api/user/login', { email, password })
+        if (data.success) {
+          localStorage.setItem('token', data.token)
+          setToken(data.token)
+        } else {
+          toast.error(data.message)
+        }
       }
-
-    } else {
-
-      const { data } = await axios.post(backendUrl + '/api/user/login', { email, password })
-
-      if (data.success) {
-        localStorage.setItem('token', data.token)
-        setToken(data.token)
-      } else {
-        toast.error(data.message)
-      }
-
-    }}catch(error){
-      toast.error(error.message)
+    } catch (error) {
+      const message = error.response?.data?.message || error.message || 'Something went wrong'
+      toast.error(message)
     }
-
   }
 
   useEffect(() => {
@@ -53,23 +48,23 @@ const Login = () => {
 
   return (
     <form onSubmit={onSubmitHandler} className='min-h-[80vh] flex items-center'>
-      <div className='flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-[#5E5E5E] text-sm shadow-lg'>
-        <p className='text-2xl font-semibold'>{state === 'Sign Up' ? 'Create Account' : 'Login'}</p>
+      <div className='flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border border-[#DADADA] dark:border-slate-700 rounded-xl text-[#5E5E5E] dark:text-slate-300 text-sm shadow-lg bg-white dark:bg-slate-900'>
+        <p className='text-2xl font-semibold dark:text-slate-100'>{state === 'Sign Up' ? 'Create Account' : 'Login'}</p>
         <p>Please {state === 'Sign Up' ? 'sign up' : 'log in'} to book appointment</p>
         {state === 'Sign Up'
-          ? <div className='w-full '>
+          ? <div className='w-full'>
             <p>Full Name</p>
-            <input onChange={(e) => setName(e.target.value)} value={name} className='border border-[#DADADA] rounded w-full p-2 mt-1' type="text" required />
+            <input onChange={(e) => setName(e.target.value)} value={name} className='border border-[#DADADA] dark:border-slate-600 rounded w-full p-2 mt-1 bg-white dark:bg-slate-800 dark:text-slate-100' type="text" required />
           </div>
           : null
         }
-        <div className='w-full '>
+        <div className='w-full'>
           <p>Email</p>
-          <input onChange={(e) => setEmail(e.target.value)} value={email} className='border border-[#DADADA] rounded w-full p-2 mt-1' type="email" required />
+          <input onChange={(e) => setEmail(e.target.value)} value={email} className='border border-[#DADADA] dark:border-slate-600 rounded w-full p-2 mt-1 bg-white dark:bg-slate-800 dark:text-slate-100' type="email" required />
         </div>
-        <div className='w-full '>
+        <div className='w-full'>
           <p>Password</p>
-          <input onChange={(e) => setPassword(e.target.value)} value={password} className='border border-[#DADADA] rounded w-full p-2 mt-1' type="password" required />
+          <input onChange={(e) => setPassword(e.target.value)} value={password} className='border border-[#DADADA] dark:border-slate-600 rounded w-full p-2 mt-1 bg-white dark:bg-slate-800 dark:text-slate-100' type="password" required />
         </div>
         <button type='submit' className='bg-primary text-white w-full py-2 my-2 rounded-md text-base'>{state === 'Sign Up' ? 'Create account' : 'Login'}</button>
         {state === 'Sign Up'

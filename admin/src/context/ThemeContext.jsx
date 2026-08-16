@@ -1,0 +1,29 @@
+import { createContext, useContext, useEffect, useState } from "react";
+
+const getInitialTheme = () => {
+  const saved = localStorage.getItem("adminTheme");
+  if (saved === "dark" || saved === "light") return saved;
+  var systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  return systemDark ? "dark" : "light";
+};
+
+export const ThemeContext = createContext();
+
+export const ThemeContextProvider = ({ children }) => {
+  const [theme, setTheme] = useState(getInitialTheme);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", theme === "dark");
+    localStorage.setItem("adminTheme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+
+  return (
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};
+
+export const useTheme = () => useContext(ThemeContext);

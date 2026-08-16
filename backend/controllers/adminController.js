@@ -13,7 +13,11 @@ const loginAdmin = async (req, res) => {
         const { email, password } = req.body
 
         if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
-            const token = jwt.sign(email + password, process.env.JWT_SECRET)
+            const token = jwt.sign(
+                { email: process.env.ADMIN_EMAIL, role: 'admin' },
+                process.env.JWT_SECRET,
+                { expiresIn: '24h' }
+            )
             res.json({ success: true, token })
         } else {
             res.json({ success: false, message: "Invalid credentials" })
@@ -154,4 +158,57 @@ const adminDashboard = async (req, res) => {
 }
 
 
-export {loginAdmin, addDoctor, allDoctors, appointmentsAdmin, appointmentCancel, adminDashboard}
+// API to delete a doctor
+const deleteDoctor = async (req, res) => {
+    try {
+        const { doctorId } = req.body
+
+        if (!doctorId) {
+            return res.status(400).json({ success: false, message: "Doctor ID is required" })
+        }
+
+        const doctor = await doctorModel.findById(doctorId)
+        if (!doctor) {
+            return res.status(404).json({ success: false, message: "Doctor not found" })
+        }
+
+        await doctorModel.findByIdAndDelete(doctorId)
+
+        res.json({ success: true, message: "Doctor deleted successfully" })
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
+}
+
+// API to change doctor's password
+const changeDoctorPassword = async (req, res) => {
+    try {
+        const { doctorId, newPassword } = req.body
+
+        if (!doctorId || !newPassword) {
+            return res.status(400).json({ success: false, message: "Doctor ID and new password are required" })
+        }
+
+        if (newPassword.length < 8) {
+            return res.status(400).json({ success: false, message: "Password must be at least 8 characters" })
+        }
+
+        const doctor = await doctorModel.findById(doctorId)
+        if (!doctor) {
+            return res.status(404).json({ success: false, message: "Doctor not found" })
+        }
+
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword = await bcrypt.hash(newPassword, salt)
+
+        await doctorModel.findByIdAndUpdate(doctorId, { password: hashedPassword })
+
+        res.json({ success: true, message: "Doctor password updated successfully" })
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
+}
+
+export {loginAdmin, addDoctor, allDoctors, appointmentsAdmin, appointmentCancel, adminDashboard, deleteDoctor, changeDoctorPassword}

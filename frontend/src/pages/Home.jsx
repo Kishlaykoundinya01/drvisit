@@ -14,7 +14,7 @@ const Home = () => {
 
       <TopDoctors />
 
-      <section className="bg-white rounded-3xl p-10 shadow-sm">
+      <section className="bg-white dark:bg-slate-900 rounded-3xl p-10 shadow-sm">
         <div className="text-center">
           <h2 className="section-title">
             Why Choose DrVisit?
@@ -28,7 +28,7 @@ const Home = () => {
 
         <div className="grid md:grid-cols-4 gap-6 mt-12">
 
-          <div className="p-6 rounded-2xl bg-sky-50">
+          <div className="p-6 rounded-2xl bg-sky-50 dark:bg-slate-800">
             <h3 className="font-bold mb-2">
               Verified Doctors
             </h3>
@@ -38,7 +38,7 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-sky-50">
+          <div className="p-6 rounded-2xl bg-sky-50 dark:bg-slate-800">
             <h3 className="font-bold mb-2">
               Secure Payments
             </h3>
@@ -48,7 +48,7 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-sky-50">
+          <div className="p-6 rounded-2xl bg-sky-50 dark:bg-slate-800">
             <h3 className="font-bold mb-2">
               Instant Booking
             </h3>
@@ -57,7 +57,7 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-sky-50">
+          <div className="p-6 rounded-2xl bg-sky-50 dark:bg-slate-800">
             <h3 className="font-bold mb-2">
               Trusted Care
             </h3>

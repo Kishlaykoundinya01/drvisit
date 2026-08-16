@@ -15,7 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   return (
-    <div className='mx-4 sm:mx-[10%]'>
+    <div className='min-h-screen bg-slate-50 dark:bg-slate-950 mx-4 sm:mx-[10%]'>
       <ToastContainer />
       <Navbar />
       <Routes>

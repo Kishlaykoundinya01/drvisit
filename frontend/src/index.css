@@ -9,9 +9,19 @@
   scroll-behavior: smooth;
 }
 
+html{
+  transition: background-color .3s ease;
+}
+
 body{
   background:#f8fafc;
   color:#1e293b;
+  transition: background-color .3s ease, color .3s ease;
+}
+
+.dark body{
+  background:#020617;
+  color:#e2e8f0;
 }
 
 .active hr{
@@ -27,9 +37,17 @@ body{
   border-radius:10px;
 }
 
+::-webkit-scrollbar-track{
+  background:transparent;
+}
+
 .glass-card{
   background:rgba(255,255,255,.8);
   backdrop-filter:blur(10px);
+}
+
+.dark .glass-card{
+  background:rgba(15,23,42,.8);
 }
 
 .gradient-bg{
@@ -42,9 +60,9 @@ body{
 }
 
 .section-title{
-  @apply text-3xl md:text-4xl font-bold text-slate-800;
+  @apply text-3xl md:text-4xl font-bold text-slate-800 dark:text-slate-100;
 }
 
 .section-subtitle{
-  @apply text-slate-500 max-w-2xl mx-auto;
+  @apply text-slate-500 dark:text-slate-400 max-w-2xl mx-auto;
 }

@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { assets } from '../assets/assets';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
+import { useTheme } from '../context/ThemeContext';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
@@ -10,6 +11,7 @@ const location = useLocation();
 const [showMenu, setShowMenu] = useState(false);
 
 const { token, setToken, userData } = useContext(AppContext);
+const { theme, toggleTheme } = useTheme();
 
 const logout = () => {
 localStorage.removeItem('token');
@@ -20,8 +22,8 @@ navigate('/login');
 const navLinkClass = ({ isActive }) =>
 `relative px-2 py-1 transition-all duration-300 ${
       isActive
-        ? 'text-sky-600 font-semibold'
-        : 'text-slate-700 hover:text-sky-600'
+        ? 'text-sky-600 dark:text-sky-400 font-semibold'
+        : 'text-slate-700 hover:text-sky-600 dark:text-slate-300 dark:hover:text-sky-400'
     }`;
 
 return (
@@ -34,11 +36,13 @@ className="sticky top-4 z-50 mb-8"
 > <div
        className="
        bg-white/90
+       dark:bg-slate-900/90
        backdrop-blur-xl
        rounded-[28px]
        shadow-xl
        border
        border-slate-200
+       dark:border-slate-700
        px-5 md:px-8
        py-3
        flex
@@ -62,11 +66,11 @@ className="sticky top-4 z-50 mb-8"
         </div>
 
         <div className="hidden sm:block">
-          <h2 className="font-bold text-xl text-slate-800">
+          <h2 className="font-bold text-xl text-slate-800 dark:text-slate-100">
             DrVisit
           </h2>
 
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-slate-500 dark:text-slate-400">
             Healthcare Platform
           </p>
         </div>
@@ -106,14 +110,45 @@ className="sticky top-4 z-50 mb-8"
 
       <div className="flex items-center gap-4">
 
+        {/* Dark Mode Toggle */}
+        <button
+          onClick={toggleTheme}
+          aria-label="Toggle dark mode"
+          className="
+            w-10
+            h-10
+            flex
+            items-center
+            justify-center
+            rounded-full
+            border
+            border-slate-300
+            dark:border-slate-600
+            text-slate-700
+            dark:text-slate-200
+            hover:bg-slate-100
+            dark:hover:bg-slate-800
+            transition-all
+          "
+        >
+          {theme === 'dark' ? (
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+            </svg>
+          ) : (
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+          )}
+        </button>
+
         {location.pathname === '/' && (
           <button
             onClick={() =>
-              window.open(
+              window.location.href =
                 import.meta.env.VITE_ADMIN_URL ||
-                  'http://localhost:5174',
-                '_blank'
-              )
+                'http://localhost:5174'
             }
             className="
               hidden lg:block
@@ -169,11 +204,13 @@ className="sticky top-4 z-50 mb-8"
               <div
                 className="
                   bg-white
+                  dark:bg-slate-800
                   shadow-xl
                   rounded-2xl
                   min-w-[220px]
                   border
                   border-slate-100
+                  dark:border-slate-700
                   p-3
                 "
               >
@@ -185,6 +222,7 @@ className="sticky top-4 z-50 mb-8"
                     p-3
                     rounded-xl
                     hover:bg-slate-100
+                    dark:hover:bg-slate-700
                     cursor-pointer
                   "
                 >
@@ -199,6 +237,7 @@ className="sticky top-4 z-50 mb-8"
                     p-3
                     rounded-xl
                     hover:bg-slate-100
+                    dark:hover:bg-slate-700
                     cursor-pointer
                   "
                 >
@@ -211,6 +250,7 @@ className="sticky top-4 z-50 mb-8"
                     p-3
                     rounded-xl
                     hover:bg-red-50
+                    dark:hover:bg-red-900/30
                     text-red-500
                     cursor-pointer
                   "
@@ -271,24 +311,25 @@ className="sticky top-4 z-50 mb-8"
           w-full
           h-screen
           bg-white
+          dark:bg-slate-950
           z-[100]
         "
       >
         <div className="flex justify-between items-center p-6">
 
-          <h2 className="font-bold text-2xl">
+          <h2 className="font-bold text-2xl dark:text-slate-100">
             DrVisit
           </h2>
 
           <img
             src={assets.cross_icon}
             alt=""
-            className="w-8 cursor-pointer"
+            className="w-8 cursor-pointer dark:invert dark:brightness-200"
             onClick={() => setShowMenu(false)}
           />
         </div>
 
-        <div className="flex flex-col gap-5 p-8 text-xl">
+        <div className="flex flex-col gap-5 p-8 text-xl dark:text-slate-200">
 
           <NavLink
             to="/"
@@ -317,6 +358,67 @@ className="sticky top-4 z-50 mb-8"
           >
             Contact
           </NavLink>
+
+          <div className="mt-4 flex items-center gap-4">
+
+            <button
+              onClick={() => {
+                toggleTheme();
+                setShowMenu(false);
+              }}
+              aria-label="Toggle dark mode"
+              className="
+                flex
+                items-center
+                justify-center
+                w-12
+                h-12
+                rounded-full
+                border
+                border-slate-300
+                dark:border-slate-600
+                text-slate-700
+                dark:text-slate-200
+                hover:bg-slate-100
+                dark:hover:bg-slate-800
+                transition-all
+              "
+            >
+              {theme === 'dark' ? (
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <circle cx="12" cy="12" r="4" />
+                  <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                </svg>
+              )}
+            </button>
+
+            {!token && (
+              <button
+                onClick={() => {
+                  navigate('/login');
+                  setShowMenu(false);
+                }}
+                className="
+                  flex-1
+                  bg-sky-500
+                  hover:bg-sky-600
+                  text-white
+                  px-6
+                  py-3
+                  rounded-full
+                  text-base
+                  transition-all
+                "
+              >
+                Login
+              </button>
+            )}
+
+          </div>
 
         </div>
       </motion.div>

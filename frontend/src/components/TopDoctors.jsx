@@ -24,7 +24,7 @@ const TopDoctors = () => {
           <div
             key={doctor._id}
             onClick={() => navigate(`/appointment/${doctor._id}`)}
-            className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all cursor-pointer"
+            className="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all cursor-pointer"
           >
             <img
               src={doctor.image}
@@ -38,7 +38,7 @@ const TopDoctors = () => {
                   className={`text-xs px-3 py-1 rounded-full ${
                     doctor.available
                       ? "bg-green-100 text-green-600"
-                      : "bg-gray-100 text-gray-500"
+                      : "bg-gray-100 text-gray-500 dark:bg-slate-800 dark:text-slate-400"
                   }`}
                 >
                   {doctor.available
@@ -51,11 +51,11 @@ const TopDoctors = () => {
                 </span>
               </div>
 
-              <h3 className="font-bold text-lg">
+              <h3 className="font-bold text-lg dark:text-slate-100">
                 {doctor.name}
               </h3>
 
-              <p className="text-slate-500">
+              <p className="text-slate-500 dark:text-slate-400">
                 {doctor.speciality}
               </p>
 

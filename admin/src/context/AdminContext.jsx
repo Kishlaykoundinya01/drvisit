@@ -106,10 +106,42 @@ const AdminContextProvider = (props) => {
 
     }
 
+    const deleteDoctor = async (doctorId) => {
+        try {
+            const { data } = await axios.post(backendUrl + '/api/admin/delete-doctor', { doctorId }, { headers: { aToken } })
+            if (data.success) {
+                toast.success(data.message)
+                getAllDoctors()
+            } else {
+                toast.error(data.message)
+            }
+        } catch (error) {
+            console.log(error)
+            toast.error(error.message)
+        }
+    }
+
+    const changeDoctorPassword = async (doctorId, newPassword) => {
+        try {
+            const { data } = await axios.post(backendUrl + '/api/admin/change-doctor-password', { doctorId, newPassword }, { headers: { aToken } })
+            if (data.success) {
+                toast.success(data.message)
+                return true
+            } else {
+                toast.error(data.message)
+                return false
+            }
+        } catch (error) {
+            console.log(error)
+            toast.error(error.response?.data?.message || error.message)
+            return false
+        }
+    }
+
     const value = {
         aToken, setAToken,
         backendUrl, doctors,
-        getAllDoctors, changeAvailability,
+        getAllDoctors, changeAvailability, deleteDoctor, changeDoctorPassword,
         appointments, setAppointments,
         getAllAppointments, cancelAppointment,
          getDashData, dashData
